@@ -31,7 +31,7 @@ const SignUp = () => {
                 <Label value="Your Email" />
                 <TextInput
                   type="email"
-                  placeholder="name@gamil.com"
+                  placeholder="name@eamil.com"
                   id="email"
                 />
               </div>
