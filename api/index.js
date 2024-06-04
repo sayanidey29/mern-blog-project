@@ -28,3 +28,15 @@ app.use("/api/user", userRoutes);
 
 //Auth API Route
 app.use("/api/auth", authRoutes);
+
+//ERROR HANDLER MIDDLEWARE
+app.use((err, req, res, next) => {
+  // console.log("middleware error", err, "middleware error msg", err.message);
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});
