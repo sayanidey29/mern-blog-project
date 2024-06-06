@@ -55,7 +55,13 @@ const FooterCom = () => {
                 >
                   Github
                 </Footer.Link>
-                <Footer.Link href="#">Discord</Footer.Link>
+                <Footer.Link
+                  href="https://discord.com/" //external link
+                  target="_blank" //open in new window
+                  rel="noopener noreferrer"
+                >
+                  Discord
+                </Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
@@ -70,7 +76,7 @@ const FooterCom = () => {
         <Footer.Divider />
         <div className="w-full sm:flex sm:items-center sm:justify-between">
           <Footer.Copyright
-            href="#"
+            href="/" //internal link
             by="Sayani's Blog"
             year={new Date().getFullYear()}
           />
