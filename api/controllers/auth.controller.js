@@ -4,7 +4,6 @@ import { errorHandler } from "../utils/error.js";
 //Auth API Route
 export const signup = async (req, res, next) => {
   console.log("request_body:", req.body);
-  console.log("response_body", res.body);
   // console.log("request:", req);
   // console.log("response", res);
   const { username, email, password } = req.body;
@@ -25,7 +24,14 @@ export const signup = async (req, res, next) => {
   const newUser = new User({ username, email, password: hashPassword });
   try {
     await newUser.save();
-    res.json("Signup Successful");
+    // res.json("Signup Successful");
+    const statusCode = res?.statusCode || 200;
+    const message = res?.message || "Signup Successful";
+    res.json({
+      success: true,
+      statusCode,
+      message,
+    });
   } catch (error) {
     // console.log("catch", error);
     // return res.status(500).json({ message: error.message });
