@@ -68,7 +68,7 @@ const SignUp = () => {
                   type="text"
                   placeholder="Username"
                   id="username"
-                  value={formData?.username}
+                  // value={formData?.username}
                   onChange={handleChange}
                 />
               </div>
@@ -78,7 +78,7 @@ const SignUp = () => {
                   type="email"
                   placeholder="name@email.com"
                   id="email"
-                  value={formData?.email}
+                  // value={formData?.email}
                   onChange={handleChange}
                 />
               </div>
@@ -88,7 +88,7 @@ const SignUp = () => {
                   type="password"
                   placeholder="Password"
                   id="password"
-                  value={formData?.password}
+                  // value={formData?.password}
                   onChange={handleChange}
                 />
               </div>
