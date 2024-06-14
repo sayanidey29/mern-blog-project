@@ -38,7 +38,7 @@ const OAuth = () => {
       }
     } catch (error) {
       console.log("Error Auth:", error);
-      dispatch(signInFailure(error));
+      dispatch(signInFailure(error?.message));
     }
   };
   return (
