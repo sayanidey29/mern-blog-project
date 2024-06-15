@@ -23,7 +23,7 @@ const Dashboard = () => {
         <DashSidebar />
       </div>
       {/*Profile...*/}
-      {tab === "profile" && <DashProfile />}
+      <div className="flex-1">{tab === "profile" && <DashProfile />}</div>
     </div>
   );
 };
