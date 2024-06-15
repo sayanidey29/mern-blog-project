@@ -18,16 +18,16 @@ const SignUp = () => {
     if (!formData.username || !formData.email || !formData.password) {
       return setErrorMessage("Please fill out all fields");
     }
-    if (formData.password.length < 6) {
+    if (formData.password?.length < 6) {
       return setErrorMessage("Password must be at less 6 characters");
     }
-    if (formData.password.includes(" ")) {
+    if (formData.password?.includes(" ")) {
       return setErrorMessage("Password cannot contain spaces");
     }
-    if (formData.username.includes(" ")) {
+    if (formData.username?.includes(" ")) {
       return setErrorMessage("Username cannot contain spaces");
     }
-    if (formData.username.length < 7 || formData.username.length > 20) {
+    if (formData.username?.length < 7 || formData.username?.length > 20) {
       return setErrorMessage("Username must be between 7 and 20 characters");
     }
     if (formData.username !== formData.username.toLowerCase()) {
