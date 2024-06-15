@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Label, TextInput, Alert, Spinner } from "flowbite-react";
-import { useDispatch, useSelector } from "react-redux";
 import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleChange = (e) => {
     // console.log("event:", e, "event Value:", e.target.value);
