@@ -19,7 +19,7 @@ const OAuth = () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
     try {
-      dispatch(signInStart());
+      // dispatch(signInStart());
       const resultFromGoogle = await signInWithPopup(auth, provider);
       console.log("resultFromGoogle Auth:", resultFromGoogle);
       const res = await fetch("/api/auth/google", {
@@ -38,7 +38,7 @@ const OAuth = () => {
       }
     } catch (error) {
       console.log("Error Auth:", error);
-      dispatch(signInFailure(error?.message));
+      //dispatch(signInFailure(error?.message));
     }
   };
   return (
