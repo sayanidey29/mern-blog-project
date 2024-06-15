@@ -20,6 +20,24 @@ const SignUp = () => {
     if (!formData.username || !formData.email || !formData.password) {
       return setErrorMessage("Please fill out all fields");
     }
+    if (formData.password.length < 6) {
+      return setErrorMessage("Password must be at less 6 characters");
+    }
+    if (formData.password.includes(" ")) {
+      return setErrorMessage("Password cannot contain spaces");
+    }
+    if (formData.username.includes(" ")) {
+      return setErrorMessage("Username cannot contain spaces");
+    }
+    if (formData.username.length < 7 || formData.username.length > 20) {
+      return setErrorMessage("Username must be between 7 and 20 characters");
+    }
+    if (formData.username !== formData.username.toLowerCase()) {
+      return setErrorMessage("Username must be lowercase");
+    }
+    if (!formData.username.match(/^[a-zA-Z0-9]+$/)) {
+      return setErrorMessage("Username can only contain letters and numbers");
+    }
     try {
       setLoading(true);
       setErrorMessage(null);
