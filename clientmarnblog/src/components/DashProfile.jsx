@@ -213,7 +213,7 @@ const DashProfile = () => {
           onChange={handleImageChange}
           ref={filePickerRef}
           className="hidden"
-          disabled={imageFileUploading}
+          disabled={imageFileUploading || loading || updateUserLoading}
         />
         <div
           className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full"
@@ -262,6 +262,7 @@ const DashProfile = () => {
           placeholder="username"
           defaultValue={currentUser.username}
           onChange={handleChange}
+          disabled={loading || updateUserLoading}
         />
         <TextInput
           type="text"
@@ -269,12 +270,14 @@ const DashProfile = () => {
           placeholder="email"
           defaultValue={currentUser.email}
           onChange={handleChange}
+          disabled={loading || updateUserLoading}
         />
         <TextInput
           type="password"
           id="password"
           placeholder="password"
           onChange={handleChange}
+          disabled={loading || updateUserLoading}
         />
         <Button
           type="submit"
@@ -304,10 +307,18 @@ const DashProfile = () => {
         )}
       </form>
       <div className="text-red-500 flex justify-between mt-5 font-semibold">
-        <span className="cursor-pointer" onClick={() => setShowModal(true)}>
+        <span
+          className="cursor-pointer"
+          onClick={() => setShowModal(true)}
+          disabled={loading || updateUserLoading || imageFileUploading}
+        >
           Delete Account
         </span>
-        <span className="cursor-pointer" onClick={handleSignout}>
+        <span
+          className="cursor-pointer"
+          onClick={handleSignout}
+          disabled={loading || updateUserLoading || imageFileUploading}
+        >
           Sign Out
         </span>
       </div>

@@ -18,14 +18,22 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [imageUploadLoading, setImageUploadLoading] = useState(false);
   const [formData, setFormData] = useState({});
   const [imageUploadSuccessful, setImageUploadSuccessful] = useState(null);
+  const [publishError, setPublishError] = useState(null);
+  const [publishLoading, setPublishLoading] = useState(false);
+  const [publishSuccess, setPublishSuccess] = useState(null);
+  const [publishSuccessData, setPublishSuccessData] = useState(null);
+  // console.log("formData", formData);
+
   const handleUploadImage = async () => {
     try {
       setImageUploadLoading(true);
@@ -74,7 +82,42 @@ const CreatePost = () => {
       return setImageUploadError(error?.messagre);
     }
   };
-  const handleSubmit = () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setPublishLoading(true);
+      setPublishSuccess(null);
+      setPublishSuccessData(null);
+      setPublishError(null);
+      const res = await fetch("api/post/createPost", {
+        method: "POST",
+        headers: { "content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      console.log("JSON.stringify(formData)", JSON.stringify(formData));
+      const data = await res.json();
+      setPublishLoading(false);
+      console.log("data", data);
+      if (data.success === false) {
+        setPublishSuccess(null);
+        setPublishLoading(false);
+        setPublishSuccessData(null);
+        return setPublishError(data.message);
+      }
+      if (res.ok) {
+        setPublishSuccess("Post is Submitted Successfully");
+        setPublishSuccessData(data);
+        setPublishLoading(false);
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishSuccess(null);
+      setPublishLoading(false);
+      setPublishSuccessData(null);
+      return setPublishError(error.message);
+    }
+  };
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">Create a Post</h1>
@@ -86,8 +129,23 @@ const CreatePost = () => {
             id="title"
             required
             className="flex-1"
+            onChange={(e) => {
+              setFormData({ ...formData, title: e.target.value });
+              setPublishSuccess(null);
+              setPublishLoading(false);
+              setPublishError(null);
+            }}
+            disabled={publishLoading}
           />
-          <Select>
+          <Select
+            disabled={publishLoading}
+            onChange={(e) => {
+              setFormData({ ...formData, category: e.target.value });
+              setPublishSuccess(null);
+              setPublishLoading(false);
+              setPublishError(null);
+            }}
+          >
             <option value="uncategorized">Select a Category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">React.js</option>
@@ -98,13 +156,18 @@ const CreatePost = () => {
           <FileInput
             type="file"
             accept="image/*"
-            disabled={imageUploadProgress || imageUploadLoading}
+            disabled={
+              imageUploadProgress || imageUploadLoading || publishLoading
+            }
             onChange={(e) => {
               console.log("e", e);
               setImageUploadError(null);
               setImageUploadProgress(null);
               setImageUploadSuccessful(null);
               setImageUploadLoading(false);
+              setPublishSuccess(null);
+              setPublishLoading(false);
+              setPublishError(null);
               setFile(e.target.files[0]);
             }}
           />
@@ -114,7 +177,9 @@ const CreatePost = () => {
             size="sm"
             outline
             onClick={handleUploadImage}
-            disabled={imageUploadProgress || imageUploadLoading}
+            disabled={
+              imageUploadProgress || imageUploadLoading || publishLoading
+            }
           >
             {imageUploadProgress ? (
               <div className="w-16 h-16">
@@ -155,15 +220,40 @@ const CreatePost = () => {
           placeholder="Write Something..."
           className="h-72 mb-12"
           required
+          onChange={(value) => {
+            setFormData({ ...formData, content: value });
+            setPublishSuccess(null);
+            setPublishLoading(false);
+            setPublishError(null);
+          }}
+          disabled={publishLoading}
         />
         <Button
           type="submit"
           gradientDuoTone="purpleToBlue"
           size="lg"
-          className="mb-5"
+          className="mb-3"
+          disabled={imageUploadProgress || imageUploadLoading || publishLoading}
         >
-          Submit
+          {publishLoading ? (
+            <div>
+              <Spinner size="sm" />
+              <span>Submitting...</span>
+            </div>
+          ) : (
+            "Submit"
+          )}
         </Button>
+        {publishError && (
+          <Alert color="failure" className="my-3">
+            {publishError}
+          </Alert>
+        )}
+        {publishSuccess && (
+          <Alert color="success" className="my-3">
+            {publishSuccess}
+          </Alert>
+        )}
       </form>
     </div>
   );

@@ -88,6 +88,7 @@ const SignIn = () => {
                   id="email"
                   // value={formData?.email}
                   onChange={handleChange}
+                  disabled={loading}
                 />
               </div>
               <div>
@@ -98,6 +99,7 @@ const SignIn = () => {
                   id="password"
                   // value={formData?.password}
                   onChange={handleChange}
+                  disabled={loading}
                 />
               </div>
               <Button
@@ -118,7 +120,7 @@ const SignIn = () => {
             </form>
             <div className="flex gap-2 text-sm mt-5">
               <span>New User, don't have an account?</span>
-              <Link to="/sign-up" className="text-blue-500">
+              <Link to="/sign-up" className="text-blue-500" disabled={loading}>
                 Sign Up
               </Link>
             </div>

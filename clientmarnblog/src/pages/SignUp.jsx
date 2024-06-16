@@ -89,6 +89,7 @@ const SignUp = () => {
                   id="username"
                   // value={formData?.username}
                   onChange={handleChange}
+                  disabled={loading}
                 />
               </div>
               <div>
@@ -99,6 +100,7 @@ const SignUp = () => {
                   id="email"
                   // value={formData?.email}
                   onChange={handleChange}
+                  disabled={loading}
                 />
               </div>
               <div>
@@ -109,6 +111,7 @@ const SignUp = () => {
                   id="password"
                   // value={formData?.password}
                   onChange={handleChange}
+                  disabled={loading}
                 />
               </div>
               <Button
@@ -129,7 +132,7 @@ const SignUp = () => {
             </form>
             <div className="flex gap-2 text-sm mt-5">
               <span>Have an account?</span>
-              <Link to="/sign-in" className="text-blue-500">
+              <Link to="/sign-in" className="text-blue-500" disabled={loading}>
                 Sign In
               </Link>
             </div>
