@@ -4,6 +4,7 @@ import {
   updateUser,
   signout,
   test,
+  getUsers,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
@@ -20,5 +21,8 @@ router.delete("/delete/:userId", verifyToken, deleteUser);
 
 //signout user profile API Route
 router.post("/signout", signout);
+
+//Get user profile API Route
+router.get("/getUsers", verifyToken, getUsers);
 
 export default router;
