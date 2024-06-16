@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
 import DashPosts from "../components/DashPosts";
+import DashUsers from "../components/DashUsers";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
@@ -28,7 +29,15 @@ const Dashboard = () => {
       {/*Profile...*/}
       {tab === "profile" && <DashProfile />}
       {/*Post...*/}
-      {tab === "posts" && currentUser?.isAdmin && <DashPosts />}
+      {tab === "posts" && (
+        //currentUser?.isAdmin &&
+        <DashPosts />
+      )}
+      {/*Users...*/}
+      {tab === "users" && (
+        //currentUser?.isAdmin &&
+        <DashUsers />
+      )}
     </div>
   );
 };
