@@ -1,8 +1,11 @@
 import express from "express";
 import { verifyToken } from "../utils/verifyUser.js";
-import { createPost } from "../controllers/post.controller.js";
-import { getPosts } from "../controllers/post.controller.js";
-import { deletePosts } from "../controllers/post.controller.js";
+import {
+  createPost,
+  updatePosts,
+  getPosts,
+  deletePosts,
+} from "../controllers/post.controller.js";
 
 const router = express.Router();
 
@@ -14,5 +17,8 @@ router.get("/getPosts", getPosts);
 
 //Delete Post API Routes
 router.get("/deletePosts/:postId/:userId", verifyToken, deletePosts);
+
+//Update Post API Routes
+router.put("/updatePosts/:postId/:userId", verifyToken, updatePosts);
 
 export default router;

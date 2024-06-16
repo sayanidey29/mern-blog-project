@@ -79,9 +79,40 @@ export const deletePosts = async (req, res, next) => {
     return next(errorHandler(403, "You are not allowed to delete this post"));
   }
   try {
-    await Post.findByIdAndDelete(req.params.postId);
+    await Post.findByIdAndDelete(req?.params?.postId);
     res.status(200).json("The Post has been deleted");
   } catch (error) {
+    next(error);
+  }
+};
+
+//Update Post API Routes
+export const updatePosts = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    return next(errorHandler(403, "You are not allowed to update this post"));
+  }
+  try {
+    const updatedslug = req?.body?.title
+      ?.split(" ")
+      ?.join("-")
+      ?.toLowerCase()
+      .replace(/[^a-zA-Z0-9-]/g, "");
+    const updatePost = await Post.findByIdAndUpdate(
+      req?.params?.postId,
+      {
+        $set: {
+          title: req?.body?.title,
+          content: req?.body?.content,
+          category: req?.body?.category,
+          image: req?.body?.image,
+          // slug: updatedslug,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatePost);
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 };

@@ -18,10 +18,13 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const CreatePost = () => {
+const UpdatePost = () => {
   const navigate = useNavigate();
+  const { postId } = useParams();
+  const { currentUser } = useSelector((state) => state.user);
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
@@ -33,6 +36,31 @@ const CreatePost = () => {
   const [publishSuccess, setPublishSuccess] = useState(null);
   const [publishSuccessData, setPublishSuccessData] = useState(null);
   // console.log("formData", formData);
+  console.log("postid", postId);
+
+  useEffect(() => {
+    try {
+      const fetchpost = async () => {
+        const res = await fetch(`/api/post/getPosts?postId=${postId}`);
+        console.log("resget", res);
+        const data = await res.json();
+        if (data?.success === false) {
+          console.log(data?.message);
+          setPublishError(data?.message);
+          return;
+        }
+        if (res?.ok) {
+          setPublishError(null);
+          setFormData(data.posts[0]);
+        }
+      };
+      fetchpost();
+    } catch (error) {
+      setPublishError(error?.message);
+      console.log(error?.message);
+      return;
+    }
+  }, [postId]);
 
   const handleUploadImage = async () => {
     try {
@@ -89,12 +117,14 @@ const CreatePost = () => {
       setPublishSuccess(null);
       setPublishSuccessData(null);
       setPublishError(null);
-      const res = await fetch("api/post/createPost", {
-        method: "POST",
-        headers: { "content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      console.log("JSON.stringify(formData)", JSON.stringify(formData));
+      const res = await fetch(
+        `/api/post/updatePosts/${postId}/${currentUser._id}`,
+        {
+          method: "PUT",
+          headers: { "content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
       console.log(res, "response");
       const data = await res.json();
       setPublishLoading(false);
@@ -103,6 +133,7 @@ const CreatePost = () => {
         setPublishSuccess(null);
         setPublishLoading(false);
         setPublishSuccessData(null);
+        console.log(data);
         return setPublishError(data.message);
       }
       if (res.ok) {
@@ -116,12 +147,13 @@ const CreatePost = () => {
       setPublishSuccess(null);
       setPublishLoading(false);
       setPublishSuccessData(null);
+      console.log(error);
       return setPublishError(error.message);
     }
   };
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
-      <h1 className="text-center text-3xl my-7 font-semibold">Create a Post</h1>
+      <h1 className="text-center text-3xl my-7 font-semibold">Update Post</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
@@ -137,6 +169,7 @@ const CreatePost = () => {
               setPublishError(null);
             }}
             disabled={publishLoading}
+            value={formData.title}
           />
           <Select
             disabled={publishLoading}
@@ -146,6 +179,7 @@ const CreatePost = () => {
               setPublishLoading(false);
               setPublishError(null);
             }}
+            value={formData.category}
           >
             <option value="uncategorized">Select a Category</option>
             <option value="javascript">JavaScript</option>
@@ -228,6 +262,7 @@ const CreatePost = () => {
             setPublishError(null);
           }}
           disabled={publishLoading}
+          value={formData.content}
         />
         <Button
           type="submit"
@@ -239,10 +274,10 @@ const CreatePost = () => {
           {publishLoading ? (
             <div>
               <Spinner size="sm" />
-              <span>Publishing...</span>
+              <span>updating...</span>
             </div>
           ) : (
-            "Publish"
+            "Update Post"
           )}
         </Button>
         {publishError && (
@@ -260,4 +295,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default UpdatePost;

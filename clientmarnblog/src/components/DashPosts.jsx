@@ -114,7 +114,10 @@ const DashPosts = () => {
 
             {userPosts.map((post) => {
               return (
-                <Table.Body className="divide-y">
+                <Table.Body
+                  as="div"
+                  className="divide-y overflow-x-scroll scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-300"
+                >
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell>
                       {new Date(post.updatedAt).toLocaleDateString()}
