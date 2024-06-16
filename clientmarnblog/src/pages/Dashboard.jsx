@@ -26,11 +26,9 @@ const Dashboard = () => {
         <DashSidebar />
       </div>
       {/*Profile...*/}
-      <div className="flex-1">{tab === "profile" && <DashProfile />}</div>
+      {tab === "profile" && <DashProfile />}
       {/*Post...*/}
-      <div className="flex-1">
-        {tab === "posts" && currentUser?.isAdmin && <DashPosts />}
-      </div>
+      {tab === "posts" && currentUser?.isAdmin && <DashPosts />}
     </div>
   );
 };
