@@ -1,6 +1,7 @@
-import { Alert, Button, Spinner, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, Spinner, TextInput } from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import {
   getDownloadURL,
   getStorage,
@@ -14,14 +15,13 @@ import {
   updateFailure,
   updateStart,
   updateSuccess,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../redux/user/userSlice";
 
 const DashProfile = () => {
-  const {
-    loading,
-    error: errorMessage,
-    currentUser,
-  } = useSelector((state) => state.user);
+  const { loading, error, currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
@@ -33,6 +33,9 @@ const DashProfile = () => {
   const [imageFileUploading, setImageFileUploading] = useState(false);
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
+  const [updateUserLoading, setUpdateUserloading] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   console.log("imageFileUploadingProgress", imageFileUploadingProgress);
   console.log("imageFileUploadError", imageFileUploadError);
 
@@ -105,14 +108,20 @@ const DashProfile = () => {
     );
   };
   const handleChange = (e) => {
+    setUpdateUserSuccess(null);
+    setUpdateUserError(null);
+    setUpdateUserloading(false);
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
   const handleSubmit = async (e) => {
+    console.log("formData", formData);
     e.preventDefault(); // Prevent the default form submission
     setUpdateUserSuccess(null);
     setUpdateUserError(null);
+    setUpdateUserloading(false);
     if (Object.keys(formData)?.length === 0) {
       setUpdateUserError("No changes made");
+      setFormData({});
       return; //prevent to submit the empty formValues
     }
     if (imageFileUploading) {
@@ -120,24 +129,52 @@ const DashProfile = () => {
       return;
     }
     try {
+      setUpdateUserloading(true);
+      setUpdateUserError(null);
       dispatch(updateStart());
-      const res = await fetch(`/api/user/update/:${currentUser._id}`, {
+      console.log("currentUser._id", currentUser._id);
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "PUT",
         headers: { "content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      setUpdateUserloading(false);
       if (data?.success === false) {
-        setUpdateUserError(data?.message);
-        return dispatch(updateFailure(data?.message));
+        setUpdateUserSuccess(null);
+        setFormData({});
+        return setUpdateUserError(data?.message);
+        // return dispatch(updateFailure(data?.message));
       }
       if (res?.ok) {
+        setUpdateUserError(null);
+        setFormData({});
         dispatch(updateSuccess(data));
         setUpdateUserSuccess("User's Profile updated successfully");
       }
     } catch (error) {
+      setUpdateUserSuccess(null);
+      setFormData({});
       setUpdateUserError(error?.message);
-      return dispatch(updateFailure(error?.message));
+      // return dispatch(updateFailure(error?.message));
+    }
+  };
+  const handleDeleteUser = async () => {
+    setShowModal(false);
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = res.json();
+      if (data?.success === false) {
+        return dispatch(deleteUserFailure(data?.message));
+      }
+      if (res?.ok) {
+        dispatch(deleteUserSuccess(data));
+      }
+    } catch (error) {
+      return dispatch(deleteUserFailure(error?.message));
     }
   };
   return (
@@ -217,9 +254,9 @@ const DashProfile = () => {
           type="submit"
           gradientDuoTone="purpleToBlue"
           outline
-          disabled={loading || imageFileUploading}
+          disabled={updateUserLoading || imageFileUploading}
         >
-          {loading ? (
+          {updateUserLoading ? (
             <div>
               <Spinner size-sm />
               <span>Updating...</span>
@@ -230,7 +267,9 @@ const DashProfile = () => {
         </Button>
       </form>
       <div className="text-red-500 flex justify-between mt-5 font-semibold">
-        <span className="cursor-pointer">Delete Account</span>
+        <span className="cursor-pointer" onClick={() => setShowModal(true)}>
+          Delete Account
+        </span>
         <span className="cursor-pointer">Sign Out</span>
       </div>
       <div>
@@ -244,7 +283,36 @@ const DashProfile = () => {
             {updateUserSuccess}
           </Alert>
         )}
+        {error && (
+          <Alert color="failure" className="mt-5">
+            {error}
+          </Alert>
+        )}
       </div>
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="w-14 h-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete your account?
+            </h3>
+          </div>
+          <div className="flex justify-center gap-16">
+            <Button color="failure" onClick={handleDeleteUser}>
+              Yes, I'm sure
+            </Button>
+            <Button color="gray" onClick={() => setShowModal(false)}>
+              No, Cancel
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
