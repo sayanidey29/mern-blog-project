@@ -2,6 +2,7 @@ import express from "express";
 import {
   deleteUser,
   updateUser,
+  signout,
   test,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../utils/verifyUser.js";
@@ -16,5 +17,8 @@ router.put("/update/:userId", verifyToken, updateUser);
 
 //delete user profile API Route
 router.delete("/delete/:userId", verifyToken, deleteUser);
+
+//signout user profile API Route
+router.post("/signout", signout);
 
 export default router;

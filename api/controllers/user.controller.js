@@ -70,7 +70,22 @@ export const deleteUser = async (req, res, next) => {
   }
   try {
     await User.findByIdAndDelete(req?.params?.userId);
-    res.status(200).json("User Account has been deleted");
+    res
+      .clearCookie("access_token") //added cookie clear line on my own
+      .status(200)
+      .json("User Account has been deleted");
+  } catch (error) {
+    next(error);
+  }
+};
+
+//signout user profile API Route
+export const signout = async (req, res, next) => {
+  try {
+    res
+      .clearCookie("access_token")
+      .status(200)
+      .json("User has been signed out");
   } catch (error) {
     next(error);
   }

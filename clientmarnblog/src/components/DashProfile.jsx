@@ -18,6 +18,9 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
+  signoutStart,
+  signoutSuccess,
+  signoutFailure,
 } from "../redux/user/userSlice";
 
 const DashProfile = () => {
@@ -35,7 +38,7 @@ const DashProfile = () => {
   const [updateUserError, setUpdateUserError] = useState(null);
   const [updateUserLoading, setUpdateUserloading] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
+  const [userSignoutError, setUserSignoutError] = useState(null);
   console.log("imageFileUploadingProgress", imageFileUploadingProgress);
   console.log("imageFileUploadError", imageFileUploadError);
 
@@ -171,10 +174,31 @@ const DashProfile = () => {
         return dispatch(deleteUserFailure(data?.message));
       }
       if (res?.ok) {
-        dispatch(deleteUserSuccess(data));
+        dispatch(deleteUserSuccess());
       }
     } catch (error) {
       return dispatch(deleteUserFailure(error?.message));
+    }
+  };
+  const handleSignout = async () => {
+    setUserSignoutError(null);
+    try {
+      dispatch(signoutStart());
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = res.json();
+      if (data?.success === false) {
+        dispatch(signoutFailure());
+        return setUserSignoutError(data?.message);
+      }
+      if (res?.ok) {
+        setUserSignoutError(null);
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      dispatch(signoutFailure());
+      return setUserSignoutError(error?.message);
     }
   };
   return (
@@ -270,7 +294,9 @@ const DashProfile = () => {
         <span className="cursor-pointer" onClick={() => setShowModal(true)}>
           Delete Account
         </span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span className="cursor-pointer" onClick={handleSignout}>
+          Sign Out
+        </span>
       </div>
       <div>
         {updateUserError && (
@@ -286,6 +312,11 @@ const DashProfile = () => {
         {error && (
           <Alert color="failure" className="mt-5">
             {error}
+          </Alert>
+        )}
+        {userSignoutError && (
+          <Alert color="failure" className="mt-5">
+            {userSignoutError}
           </Alert>
         )}
       </div>

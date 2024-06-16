@@ -1,17 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar, TextInput, Button, Dropdown, Avatar } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
+import {
+  signoutStart,
+  signoutSuccess,
+  signoutFailure,
+} from "../redux/user/userSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   console.log("currentUser", currentUser);
+  const [userSignoutError, setUserSignoutError] = useState(null);
+
+  const handleSignout = async () => {
+    setUserSignoutError(null);
+    try {
+      dispatch(signoutStart());
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = res.json();
+      if (data?.success === false) {
+        dispatch(signoutFailure());
+        return setUserSignoutError(data?.message);
+      }
+      if (res?.ok) {
+        setUserSignoutError(null);
+        dispatch(signoutSuccess());
+        navigate("/sign-in");
+      }
+    } catch (error) {
+      dispatch(signoutFailure());
+      return setUserSignoutError(error?.message);
+    }
+  };
   return (
     <Navbar className="border-b-2 ">
       <Link
@@ -61,7 +91,7 @@ const Header = () => {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Dropdown.Item>Sign Out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignout}>Sign Out</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/sign-in">
