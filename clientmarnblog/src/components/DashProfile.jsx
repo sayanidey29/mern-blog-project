@@ -284,7 +284,7 @@ const DashProfile = () => {
         >
           {updateUserLoading ? (
             <div>
-              <Spinner size-sm />
+              <Spinner size="sm" />
               <span>Updating...</span>
             </div>
           ) : (
