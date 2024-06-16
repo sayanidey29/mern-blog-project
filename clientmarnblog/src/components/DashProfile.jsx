@@ -24,6 +24,7 @@ import {
 } from "../redux/user/userSlice";
 
 const DashProfile = () => {
+  const blankprofileimg = "../assets/blank_profile.jpeg";
   const { loading, error, currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [imageFile, setImageFile] = useState(null);
@@ -239,7 +240,7 @@ const DashProfile = () => {
             />
           )}
           <img
-            src={imageFileUrl || currentUser.profilePicture}
+            src={imageFileUrl || currentUser.profilePicture || blankprofileimg}
             alt="user"
             className={`rounded-full w-full h-full object-cover border-8 border-[lightgray] ${
               imageFileUploadingProgress &&
