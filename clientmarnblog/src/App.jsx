@@ -31,7 +31,7 @@ function App() {
           <Route path="/update-post/:postId" element={<UpdatePost />}></Route>
         </Route>
         <Route path="/projects" element={<Projects />}></Route>
-        <Route path="/post-page/:postslug" element={<PostPage />}></Route>
+        <Route path="/post-page/:postSlug" element={<PostPage />}></Route>
       </Routes>
       <FooterCom />
     </BrowserRouter>
