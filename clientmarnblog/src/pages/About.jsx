@@ -1,7 +1,7 @@
 import React from "react";
 
 const About = () => {
-  return <div>About My Page</div>;
+  return <div className="max-h-screen">About My Page</div>;
 };
 
 export default About;
