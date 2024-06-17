@@ -22,7 +22,7 @@ const DashUsers = () => {
         if (res.ok) {
           setUserPofiles(data?.users);
           console.log("userPosts23", userPofiles);
-          if (data?.users?.length < 9) {
+          if (data?.users?.length <= 9) {
             setShowMore(false);
             setShowLess(false);
           } else {
@@ -45,7 +45,7 @@ const DashUsers = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPofiles((prev) => [...prev, ...data?.users]);
-        if (data.users.length < 9) {
+        if (data.users.length <= 9) {
           setShowLess(true);
           setShowMore(false);
         }
@@ -62,7 +62,7 @@ const DashUsers = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPofiles(data?.users);
-        if (data?.users?.length < 9) {
+        if (data?.users?.length <= 9) {
           setShowMore(false);
           setShowLess(false);
         } else {
@@ -78,9 +78,9 @@ const DashUsers = () => {
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(
-        `/api/user/deleteUser/${userIdToDelete}/${currentUser._id}`
-      );
+      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       if (data.success === false) {
         console.log(data.message);
@@ -89,6 +89,8 @@ const DashUsers = () => {
         setUserPofiles((prev) =>
           prev.filter((user) => user._id !== userIdToDelete)
         );
+
+        handleShowLess();
       }
     } catch (error) {
       console.log(error.message);
@@ -183,10 +185,7 @@ const DashUsers = () => {
             </h3>
           </div>
           <div className="flex justify-center gap-16">
-            <Button
-              color="failure"
-              //onClick={handleDeleteUser}
-            >
+            <Button color="failure" onClick={handleDeleteUser}>
               Yes, I'm sure
             </Button>
             <Button color="gray" onClick={() => setShowModal(false)}>

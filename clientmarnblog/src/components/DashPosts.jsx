@@ -21,7 +21,7 @@ const DashPosts = () => {
         if (res.ok) {
           setUserPosts(data?.posts);
           console.log("userPosts23", userPosts);
-          if (data?.posts?.length < 9) {
+          if (data?.posts?.length <= 9) {
             setShowMore(false);
             setShowLess(false);
           } else {
@@ -46,7 +46,7 @@ const DashPosts = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPosts((prev) => [...prev, ...data?.posts]);
-        if (data.posts.length < 9) {
+        if (data.posts.length <= 9) {
           setShowLess(true);
           setShowMore(false);
         }
@@ -63,7 +63,7 @@ const DashPosts = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPosts(data?.posts);
-        if (data?.posts?.length < 9) {
+        if (data?.posts?.length <= 9) {
           setShowMore(false);
           setShowLess(false);
         } else {
@@ -80,7 +80,10 @@ const DashPosts = () => {
     setShowModal(false);
     try {
       const res = await fetch(
-        `/api/post/deletePosts/${postIdToDelete}/${currentUser._id}`
+        `/api/post/deletePosts/${postIdToDelete}/${currentUser._id}`,
+        {
+          method: "DELETE",
+        }
       );
       const data = await res.json();
       if (data.success === false) {
@@ -90,6 +93,7 @@ const DashPosts = () => {
         setUserPosts((prev) =>
           prev.filter((post) => post._id !== postIdToDelete)
         );
+        handleShowLess();
       }
     } catch (error) {
       console.log(error.message);
@@ -114,7 +118,7 @@ const DashPosts = () => {
 
             {userPosts.map((post) => {
               return (
-                <Table.Body className="divide-y" key={post_id}>
+                <Table.Body className="divide-y" key={post._id}>
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell>
                       {new Date(post.updatedAt).toLocaleDateString()}

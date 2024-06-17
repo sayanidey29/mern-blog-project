@@ -4,7 +4,7 @@ import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 //Auth API Route for SignUp
 export const signup = async (req, res, next) => {
-  console.log("request_body:", req?.body);
+  // console.log("request_body:", req?.body);
   // console.log("request:", req);
   // console.log("response", res);
   const { username, email, password } = req?.body;

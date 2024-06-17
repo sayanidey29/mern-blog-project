@@ -65,15 +65,26 @@ export const updateUser = async (req, res, next) => {
 
 //Delete user profile API Route
 export const deleteUser = async (req, res, next) => {
-  if (req?.user?.id !== req?.params?.userId) {
+  if (!req?.user?.isAdmin && req?.user?.id !== req?.params?.userId) {
     return next(errorHandler(403, "You are not allowed to delete this user"));
   }
+
   try {
     await User.findByIdAndDelete(req?.params?.userId);
-    res
-      .clearCookie("access_token") //added cookie clear line on my own
-      .status(200)
-      .json("User Account has been deleted");
+    if (req?.user?.isAdmin) {
+      //for admin no need to clear the cookie
+      res.status(200).json("User Account has been deleted");
+    } else if (req?.user?.isAdmin && req?.user?.id === req?.params?.userId) {
+      res
+        .clearCookie("access_token") //added cookie clear line on my own
+        .status(200)
+        .json("User Account has been deleted");
+    } else {
+      res
+        .clearCookie("access_token") //added cookie clear line on my own
+        .status(200)
+        .json("User Account has been deleted");
+    }
   } catch (error) {
     next(error);
   }
@@ -94,6 +105,7 @@ export const signout = async (req, res, next) => {
 //Get user profile API Route
 export const getUsers = async (req, res, next) => {
   if (!req?.user?.isAdmin) {
+    console.log(req);
     return next(errorHandler(403, "You are not allowed to see all users"));
   }
   try {
