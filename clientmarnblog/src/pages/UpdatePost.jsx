@@ -141,7 +141,8 @@ const UpdatePost = () => {
         setPublishSuccessData(data);
         setPublishLoading(false);
         setPublishError(null);
-        navigate(`/post/${data.slug}`);
+        console.log("updated data", data);
+        navigate(`/post-page/${data.slug}`);
       }
     } catch (error) {
       setPublishSuccess(null);

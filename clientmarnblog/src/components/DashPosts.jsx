@@ -124,7 +124,7 @@ const DashPosts = () => {
                       {new Date(post.updatedAt).toLocaleDateString()}
                     </Table.Cell>
                     <Table.Cell>
-                      <Link to={`/post/${post.slug}`}>
+                      <Link to={`/post-page/${post.slug}`}>
                         <img
                           src={post.image}
                           alt={post.title}
@@ -134,7 +134,7 @@ const DashPosts = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Link
-                        to={`/post/${post.slug}`}
+                        to={`/post-page/${post.slug}`}
                         className="font-medium  text-gray-900 dark:text-white"
                       >
                         {post.title.toUpperCase()}

@@ -110,7 +110,10 @@ const CreatePost = () => {
         setPublishSuccessData(data);
         setPublishLoading(false);
         setPublishError(null);
-        navigate(`/post/${data.slug}`);
+        console.log("create data", data);
+        const createdslug = data?.post?.slug;
+        console.log("createdslug", createdslug);
+        navigate(`/post-page/${createdslug}`);
       }
     } catch (error) {
       setPublishSuccess(null);
