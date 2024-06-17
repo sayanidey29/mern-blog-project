@@ -1,4 +1,5 @@
 import React from "react";
+import CallToAction from "../components/CallToAction";
 
 const Projects = () => {
   return (
