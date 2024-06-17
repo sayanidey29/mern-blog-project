@@ -22,7 +22,7 @@ const DashUsers = () => {
         if (res.ok) {
           setUserPofiles(data?.users);
           console.log("userPosts23", userPofiles);
-          if (data?.users?.length <= 9) {
+          if (data?.users?.length < 9) {
             setShowMore(false);
             setShowLess(false);
           } else {
@@ -45,7 +45,7 @@ const DashUsers = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPofiles((prev) => [...prev, ...data?.users]);
-        if (data.users.length <= 9) {
+        if (data.users.length < 9) {
           setShowLess(true);
           setShowMore(false);
         }
@@ -62,7 +62,7 @@ const DashUsers = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPofiles(data?.users);
-        if (data?.users?.length <= 9) {
+        if (data?.users?.length < 9) {
           setShowMore(false);
           setShowLess(false);
         } else {

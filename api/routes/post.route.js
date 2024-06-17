@@ -16,7 +16,7 @@ router.post("/createPost", verifyToken, createPost);
 router.get("/getPosts", getPosts);
 
 //Delete Post API Routes
-router.get("/deletePosts/:postId/:userId", verifyToken, deletePosts);
+router.delete("/deletePosts/:postId/:userId", verifyToken, deletePosts);
 
 //Update Post API Routes
 router.put("/updatePosts/:postId/:userId", verifyToken, updatePosts);

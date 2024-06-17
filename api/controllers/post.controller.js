@@ -82,6 +82,7 @@ export const deletePosts = async (req, res, next) => {
     await Post.findByIdAndDelete(req?.params?.postId);
     res.status(200).json("The Post has been deleted");
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

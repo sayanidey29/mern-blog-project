@@ -21,7 +21,7 @@ const DashPosts = () => {
         if (res.ok) {
           setUserPosts(data?.posts);
           console.log("userPosts23", userPosts);
-          if (data?.posts?.length <= 9) {
+          if (data?.posts?.length < 9) {
             setShowMore(false);
             setShowLess(false);
           } else {
@@ -46,7 +46,7 @@ const DashPosts = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPosts((prev) => [...prev, ...data?.posts]);
-        if (data.posts.length <= 9) {
+        if (data.posts.length < 9) {
           setShowLess(true);
           setShowMore(false);
         }
@@ -63,7 +63,7 @@ const DashPosts = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPosts(data?.posts);
-        if (data?.posts?.length <= 9) {
+        if (data?.posts?.length < 9) {
           setShowMore(false);
           setShowLess(false);
         } else {
