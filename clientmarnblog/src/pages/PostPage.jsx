@@ -64,7 +64,7 @@ const PostPage = () => {
       <img
         src={postData && postData.image}
         alt={postData && postData.title}
-        className="mt-10 p-3 object-cover max-h-[600px] w-full"
+        className="mt-10 p-3 object-cover max-h-[600px] w-[80%] mx-auto"
       ></img>
       <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
         <span>
@@ -76,7 +76,7 @@ const PostPage = () => {
       </div>
 
       <div
-        className="P-3 max-w-2xl mx-auto w-full post-content"
+        className="P-3 max-w-2xl mx-auto w-full post-content mt-5"
         dangerouslySetInnerHTML={{ __html: postData && postData.content }}
       ></div>
     </main>
