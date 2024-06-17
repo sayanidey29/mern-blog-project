@@ -5,6 +5,7 @@ import {
   signout,
   test,
   getUsers,
+  getUsersComment,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
@@ -24,5 +25,8 @@ router.post("/signout", signout);
 
 //Get user profile API Route
 router.get("/getUsers", verifyToken, getUsers);
+
+////Get user for comment API Route
+router.get("/getUsersComment/:userId", getUsersComment);
 
 export default router;

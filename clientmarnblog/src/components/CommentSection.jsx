@@ -1,15 +1,20 @@
 import { useSelector } from "react-redux";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, TextInput, Textarea, Spinner, Alert } from "flowbite-react";
 import axios from "axios";
+import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comments, setComments] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [commentLoaing, setCommentLoading] = useState(false);
+  const [getComments, setGetComments] = useState("");
+  const [getcommentError, setGetCommentError] = useState(null);
+  const [getcommentLoaing, setGetCommentLoading] = useState(false);
 
+  console.log(getComments);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comments.length > 200) {
@@ -33,13 +38,42 @@ const CommentSection = ({ postId }) => {
         console.log("data commment", data);
         setCommentError(null);
         setComments("");
+        setGetComments([data, ...getComments]);
       }
     } catch (error) {
       setCommentLoading(false);
-      setCommentError(error);
+      setCommentError(error?.message);
       return;
     }
   };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        setCommentLoading(true);
+        setGetCommentError(null);
+        const res = await axios.get(`/api/comment/getComment/${postId}`);
+        const data = await res.data;
+        setCommentLoading(false);
+        if (data?.success === false) {
+          setGetCommentError(data?.message);
+          return;
+        }
+        console.log("res", res);
+        if (res?.statusText?.toLowerCase() === "ok") {
+          console.log("com", data);
+          setGetComments(data);
+          setGetCommentError(null);
+        }
+      } catch (error) {
+        setCommentLoading(false);
+        setGetCommentError(error?.message);
+        console.log(error, error?.message);
+        return;
+      }
+    };
+    fetchComments();
+  }, [postId]);
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -104,6 +138,31 @@ const CommentSection = ({ postId }) => {
             </Alert>
           )}
         </form>
+      )}
+      {getcommentLoaing ? (
+        <div>
+          <Spinner />
+          <span>Loading...</span>
+        </div>
+      ) : getComments.length === 0 ? (
+        <p className="text-sm my-5">No Comments Yet!</p>
+      ) : (
+        <div>
+          <div className="text-xs my-5 flex items-center gap-1">
+            <p>Comments</p>
+            <div className="border border-gray-400 py-1 px-2 rounded-sm ">
+              {getComments.length}
+            </div>
+          </div>
+          {getComments.map((comment) => {
+            return <Comment comment={comment} key={comment._id} />;
+          })}
+        </div>
+      )}
+      {getcommentError && (
+        <Alert color="failure" className="mt-5">
+          {getcommentError}
+        </Alert>
       )}
     </div>
   );

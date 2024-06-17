@@ -35,7 +35,7 @@ const PostPage = () => {
       } catch (error) {
         setLoading(false);
         setPostData(null);
-        console.log("Error", error);
+        console.log("Error", error, error?.message);
         return setError(true);
       }
     };

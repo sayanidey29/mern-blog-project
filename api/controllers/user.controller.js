@@ -139,3 +139,16 @@ export const getUsers = async (req, res, next) => {
     next(error);
   }
 };
+
+////Get user for comment API Route
+export const getUsersComment = async (req, res, next) => {
+  try {
+    const getUser = await User.findById(req.params.userId);
+    if (!getUser) {
+      return next(errorHandler(404, "User not Found"));
+    }
+    res.status(200).json(getUser);
+  } catch (error) {
+    next(error);
+  }
+};
