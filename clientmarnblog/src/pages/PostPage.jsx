@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Spinner } from "flowbite-react";
 import CallToAction from "../components/CallToAction";
+import CommentSection from "../components/CommentSection";
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -75,14 +76,18 @@ const PostPage = () => {
           {postData && (postData.content.length / 1000).toFixed(0)} mins read
         </span>
       </div>
-
       <div
         className="P-3 max-w-2xl mx-auto w-full post-content mt-5"
         dangerouslySetInnerHTML={{ __html: postData && postData.content }}
       ></div>
+
+      {/*CallToAction component*/}
       <div className="max-w-4xl mx-auto w-full">
         <CallToAction />
       </div>
+
+      {/*Comment Section component*/}
+      <CommentSection postId={postData?._id} />
     </main>
   );
 };
