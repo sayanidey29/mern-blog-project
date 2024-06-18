@@ -8,6 +8,7 @@ import {
   likeComment,
   loveComment,
   updateComment,
+  getAllPostComments,
 } from "../controllers/comment.controller.js";
 
 const router = express.Router();
@@ -32,5 +33,8 @@ router.put("/updateComment/:commentId", verifyToken, updateComment);
 
 //delete comment API Route
 router.delete("/deleteComment/:commentId", verifyToken, deleteComment);
+
+//get All post comments API Route
+router.get("/getAllPostComments", verifyToken, getAllPostComments);
 
 export default router;
