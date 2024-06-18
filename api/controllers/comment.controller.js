@@ -23,12 +23,112 @@ export const createComment = async (req, res, next) => {
   }
 };
 
+//get comment API Route
 export const getComment = async (req, res, next) => {
   try {
     const getComments = await Comment.find({ postId: req.params.postId }).sort({
       createdAt: -1,
     });
     res.status(200).json(getComments);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//like comment API Route
+export const likeComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) {
+      return next(errorHandler(404, "Comment Not Found!!!"));
+    }
+    const likesuserIndex = comment.likes.indexOf(req.user.id);
+    const indexdislike = comment.dislikes.indexOf(req.user.id);
+    const indexlove = comment.loves.indexOf(req.user.id);
+
+    if (likesuserIndex === -1) {
+      comment.numberOfLikes += 1;
+      comment.likes.push(req.user.id);
+      if (indexdislike !== -1) {
+        comment.numberOfDisLikes -= 1;
+        comment.dislikes.splice(indexdislike, 1);
+      }
+      if (indexlove !== -1) {
+        comment.numberOfLoves -= 1;
+        comment.loves.splice(indexlove, 1);
+      }
+    } else {
+      comment.numberOfLikes -= 1;
+      comment.likes.splice(likesuserIndex, 1);
+    }
+    await comment.save();
+    res.status(200).json(comment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//love comment API Route
+export const loveComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) {
+      return next(errorHandler(404, "Comment Not Found!!!"));
+    }
+    const lovesuserIndex = comment.loves.indexOf(req.user.id);
+    const indexlike = comment.likes.indexOf(req.user.id);
+    const indexdislike = comment.dislikes.indexOf(req.user.id);
+
+    if (lovesuserIndex === -1) {
+      comment.numberOfLoves += 1;
+      comment.loves.push(req.user.id);
+      if (indexdislike !== -1) {
+        comment.numberOfDisLikes -= 1;
+        comment.dislikes.splice(indexdislike, 1);
+      }
+      if (indexlike !== -1) {
+        comment.numberOfLikes -= 1;
+        comment.likes.splice(indexlike, 1);
+      }
+    } else {
+      comment.numberOfLoves -= 1;
+      comment.loves.splice(lovesuserIndex, 1);
+    }
+    await comment.save();
+    res.status(200).json(comment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//dislike comment API Route
+export const dislikeComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) {
+      return next(errorHandler(404, "Comment Not Found!!!"));
+    }
+    const dislikeuserIndex = comment.dislikes.indexOf(req.user.id);
+    const indexlike = comment.likes.indexOf(req.user.id);
+    const indexlove = comment.loves.indexOf(req.user.id);
+
+    if (dislikeuserIndex === -1) {
+      comment.numberOfDisLikes += 1;
+      comment.dislikes.push(req.user.id);
+      if (indexlove !== -1) {
+        comment.numberOfLoves -= 1;
+        comment.loves.splice(indexlove, 1);
+      }
+      if (indexlike !== -1) {
+        comment.numberOfLikes -= 1;
+        comment.likes.splice(indexlike, 1);
+      }
+    } else {
+      comment.numberOfDisLikes -= 1;
+      comment.dislikes.splice(dislikeuserIndex, 1);
+    }
+    await comment.save();
+    res.status(200).json(comment);
   } catch (error) {
     next(error);
   }

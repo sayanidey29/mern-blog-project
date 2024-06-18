@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, TextInput, Textarea, Spinner, Alert } from "flowbite-react";
 import axios from "axios";
 import Comment from "./Comment";
@@ -13,6 +13,7 @@ const CommentSection = ({ postId }) => {
   const [getComments, setGetComments] = useState("");
   const [getcommentError, setGetCommentError] = useState(null);
   const [getcommentLoaing, setGetCommentLoading] = useState(false);
+  const navigate = useNavigate();
 
   console.log(getComments);
   const handleSubmit = async (e) => {
@@ -74,6 +75,115 @@ const CommentSection = ({ postId }) => {
     };
     fetchComments();
   }, [postId]);
+
+  const handleLike = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+      const res = await axios.put(`/api/comment/likeComment/${commentId}`);
+      const data = await res.data;
+      console.log(data);
+      if (data?.success === false) {
+        console.log(data?.message);
+        return;
+      }
+      if (res?.statusText?.toLowerCase() === "ok") {
+        console.log(data);
+        setGetComments(
+          getComments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.numberOfLikes,
+                  dislikes: data.dislikes,
+                  numberOfDisLikes: data.numberOfdisLikes,
+                  loves: data.loves,
+                  numberOfLoves: data.numberOfLoves,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
+  const handleLove = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+      const res = await axios.put(`/api/comment/loveComment/${commentId}`);
+      const data = await res.data;
+      if (data?.success === false) {
+        console.log(data?.message);
+        return;
+      }
+      if (res?.statusText?.toLowerCase() === "ok") {
+        console.log(data);
+        setGetComments(
+          getComments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.numberOfLikes,
+                  dislikes: data.dislikes,
+                  numberOfDisLikes: data.numberOfdisLikes,
+                  loves: data.loves,
+                  numberOfLoves: data.numberOfLoves,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
+  const handleDisLike = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+      const res = await axios.put(`/api/comment/dislikeComment/${commentId}`);
+      const data = await res.data;
+      if (data?.success === false) {
+        console.log(data?.message);
+        return;
+      }
+      if (res?.statusText?.toLowerCase() === "ok") {
+        console.log(data);
+
+        setGetComments(
+          getComments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.numberOfLikes,
+                  dislikes: data.dislikes,
+                  numberOfDisLikes: data.numberOfDisLikes,
+                  loves: data.loves,
+                  numberOfLoves: data.numberOfLoves,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -155,7 +265,15 @@ const CommentSection = ({ postId }) => {
             </div>
           </div>
           {getComments.map((comment) => {
-            return <Comment comment={comment} key={comment._id} />;
+            return (
+              <Comment
+                comment={comment}
+                key={comment._id}
+                onLike={handleLike}
+                onLove={handleLove}
+                onDisLike={handleDisLike}
+              />
+            );
           })}
         </div>
       )}
