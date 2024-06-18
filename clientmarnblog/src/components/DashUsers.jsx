@@ -10,7 +10,7 @@ const DashUsers = () => {
   const [showMore, setShowMore] = useState(false);
   const [showLess, setShowLess] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [userIdToDelete, setPostIdToDelete] = useState("");
+  const [userIdToDelete, setUserIdToDelete] = useState("");
   console.log("userPofiles", userPofiles);
   useEffect(() => {
     const fetchUsers = async () => {
@@ -138,7 +138,7 @@ const DashUsers = () => {
                       <span
                         onClick={() => {
                           setShowModal(true);
-                          setPostIdToDelete(user._id);
+                          setUserIdToDelete(user._id);
                         }}
                         className="text-red-500 font-medium hover:underline cursor-pointer"
                       >
