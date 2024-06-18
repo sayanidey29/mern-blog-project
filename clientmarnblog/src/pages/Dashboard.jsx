@@ -29,11 +29,10 @@ const Dashboard = () => {
         <DashSidebar />
       </div>
       {/*Comments...*/}
-      {tab === "dash" ||
-        (!tab && (
-          //currentUser?.isAdmin &&
-          <DashboardComponent />
-        ))}
+      {tab === "dash" && (
+        //currentUser?.isAdmin &&
+        <DashboardComponent />
+      )}
       {/*Profile...*/}
       {tab === "profile" && <DashProfile />}
       {/*Post...*/}
