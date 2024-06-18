@@ -1,9 +1,18 @@
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, TextInput, Textarea, Spinner, Alert } from "flowbite-react";
+import {
+  Button,
+  TextInput,
+  Textarea,
+  Spinner,
+  Alert,
+  Modal,
+} from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import axios from "axios";
 import Comment from "./Comment";
+import { set } from "mongoose";
 
 const CommentSection = ({ postId }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -13,6 +22,8 @@ const CommentSection = ({ postId }) => {
   const [getComments, setGetComments] = useState("");
   const [getcommentError, setGetCommentError] = useState(null);
   const [getcommentLoaing, setGetCommentLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
 
   console.log(getComments);
@@ -184,6 +195,38 @@ const CommentSection = ({ postId }) => {
     }
   };
 
+  const handleEdit = async (comment, editedContent) => {
+    setGetComments(
+      getComments.map((c) =>
+        c._id === comment._id ? { ...c, content: editedContent } : c
+      )
+    );
+  };
+
+  const handleDelete = async (comment) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+      }
+      const res = await axios.delete(
+        `/api/comment/deleteComment/${comment._id}`
+      );
+      const data = res.data;
+      if (data?.success === false) {
+        console.log(data?.message);
+        return;
+      }
+      if (res?.statusText?.toLowerCase() === "ok") {
+        console.log(data);
+        setGetComments(getComments.filter((c) => c._id !== comment._id));
+        setShowModal(false);
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -272,6 +315,11 @@ const CommentSection = ({ postId }) => {
                 onLike={handleLike}
                 onLove={handleLove}
                 onDisLike={handleDisLike}
+                onEdit={handleEdit}
+                onDelete={(comment) => {
+                  setShowModal(true);
+                  setCommentToDelete(comment);
+                }}
               />
             );
           })}
@@ -282,6 +330,34 @@ const CommentSection = ({ postId }) => {
           {getcommentError}
         </Alert>
       )}
+
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="w-14 h-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete comment?
+            </h3>
+          </div>
+          <div className="flex justify-center gap-16">
+            <Button
+              color="failure"
+              onClick={() => handleDelete(commentToDelete)}
+            >
+              Yes, I'm sure
+            </Button>
+            <Button color="gray" onClick={() => setShowModal(false)}>
+              No, Cancel
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

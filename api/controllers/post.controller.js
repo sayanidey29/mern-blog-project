@@ -21,7 +21,7 @@ export const createPost = async (req, res, next) => {
   });
   try {
     const savePost = await newPost.save();
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       post: savePost,
     });

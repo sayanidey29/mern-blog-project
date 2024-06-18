@@ -2,10 +2,12 @@ import express from "express";
 import { verifyToken } from "../utils/verifyUser.js";
 import {
   createComment,
+  deleteComment,
   dislikeComment,
   getComment,
   likeComment,
   loveComment,
+  updateComment,
 } from "../controllers/comment.controller.js";
 
 const router = express.Router();
@@ -24,5 +26,11 @@ router.put("/loveComment/:commentId", verifyToken, loveComment);
 
 //dislike comment API Route
 router.put("/dislikeComment/:commentId", verifyToken, dislikeComment);
+
+//update comment API Route
+router.put("/updateComment/:commentId", verifyToken, updateComment);
+
+//delete comment API Route
+router.delete("/deleteComment/:commentId", verifyToken, deleteComment);
 
 export default router;
