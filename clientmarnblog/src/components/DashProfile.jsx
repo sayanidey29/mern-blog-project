@@ -171,7 +171,7 @@ const DashProfile = () => {
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: "DELETE",
       });
-      const data = res.json();
+      const data = await res.json();
       if (data?.success === false) {
         return dispatch(deleteUserFailure(data?.message));
       }
@@ -189,7 +189,7 @@ const DashProfile = () => {
       const res = await fetch("/api/user/signout", {
         method: "POST",
       });
-      const data = res.json();
+      const data = await res.json();
       if (data?.success === false) {
         dispatch(signoutFailure());
         return setUserSignoutError(data?.message);

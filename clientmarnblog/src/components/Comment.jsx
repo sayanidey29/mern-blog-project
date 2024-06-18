@@ -61,7 +61,7 @@ const Comment = ({ comment, onLike, onDisLike, onLove, onEdit, onDelete }) => {
       const res = await axios.put(`/api/comment/updateComment/${comment._id}`, {
         content: editedContent,
       });
-      const data = res.data;
+      const data = await res.data;
       console.log("edit", res);
       if (data?.success === false) {
         console.log(data?.message);

@@ -37,7 +37,7 @@ const DashSidebar = () => {
       const res = await fetch("/api/user/signout", {
         method: "POST",
       });
-      const data = res.json();
+      const data = await res.json();
       if (data?.success === false) {
         dispatch(signoutFailure());
         return setUserSignoutError(data?.message);

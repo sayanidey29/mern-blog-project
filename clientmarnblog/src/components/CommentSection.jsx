@@ -211,7 +211,7 @@ const CommentSection = ({ postId }) => {
       const res = await axios.delete(
         `/api/comment/deleteComment/${comment._id}`
       );
-      const data = res.data;
+      const data = await res.data;
       if (data?.success === false) {
         console.log(data?.message);
         return;
