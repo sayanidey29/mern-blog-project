@@ -4,12 +4,14 @@ import axios from "axios";
 import { Button, Spinner } from "flowbite-react";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 
 const PostPage = () => {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [postData, setPostData] = useState(null);
+  const [recentPosts, setRecentPosts] = useState(null);
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -42,6 +44,27 @@ const PostPage = () => {
     fetchPost();
     console.log(postSlug);
   }, [postSlug]);
+
+  useEffect(() => {
+    try {
+      const fetchRecentPosts = async () => {
+        const res = await axios.get(`/api/post/getPosts?limit=3`);
+        const data = await res.data;
+        if (data?.success === false) {
+          console.log(error);
+          return;
+        }
+        if (res?.statusText?.toLowerCase() === "ok") {
+          setRecentPosts(data.posts);
+        }
+      };
+      fetchRecentPosts();
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  }, []);
+
   if (loading)
     return (
       <div className="min-h-screen flex gap-1 justify-center my-5">
@@ -87,7 +110,18 @@ const PostPage = () => {
       </div>
 
       {/*Comment Section component*/}
-      <CommentSection postId={postData?._id} />
+      <CommentSection postId={postData._id} />
+
+      {/*Recent Artical*/}
+      <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className="text-xl mt-5">Recent Articals</h1>
+        <div className=" flex flex-wrap gap-5 mt-5 justify-center ">
+          {recentPosts &&
+            recentPosts.map((post) => {
+              return <PostCard key={post._id} post={post} />;
+            })}
+        </div>
+      </div>
     </main>
   );
 };
