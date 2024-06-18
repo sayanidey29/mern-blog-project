@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const PostCard = ({ post }) => {
+  console.log(post, "gotpost");
   return (
     <div
       className="group relative w-full border hover:border-2 h-[400px] 

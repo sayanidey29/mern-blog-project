@@ -28,7 +28,8 @@ const PostPage = () => {
           new Date(data?.posts?.[0]?.createdAt).toLocaleDateString()
         );
         if (data?.success === false) {
-          return setError(error?.message);
+          console.log("Error", data?.message);
+          return setError(true);
         }
         if (res?.statusText?.toLowerCase() === "ok") {
           setPostData(data?.posts?.[0]);

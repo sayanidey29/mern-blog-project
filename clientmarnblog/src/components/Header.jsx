@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, TextInput, Button, Dropdown, Avatar } from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -20,6 +20,18 @@ const Header = () => {
   const { theme } = useSelector((state) => state.theme);
   console.log("currentUser", currentUser);
   const [userSignoutError, setUserSignoutError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    console.log("urlParams", urlParams);
+    const searchTermsFormUrl = urlParams.get("searchTerm");
+    console.log("searchTermsFormUrl out", searchTermsFormUrl);
+    if (searchTermsFormUrl) {
+      setSearchTerm(searchTermsFormUrl);
+      console.log("searchTermsFormUrl in", searchTermsFormUrl);
+    }
+  }, [location.search]);
 
   const handleSignout = async () => {
     setUserSignoutError(null);
@@ -43,6 +55,15 @@ const Header = () => {
       return setUserSignoutError(error?.message);
     }
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    console.log("submiturlParams", urlParams);
+    urlParams.set("searchTerm", searchTerm);
+    console.log("seturlParams", urlParams);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
   return (
     <Navbar className="border-b-2 ">
       <Link
@@ -54,17 +75,21 @@ const Header = () => {
         </span>
         Blog
       </Link>
-      <form>
+      <form onSubmit={handleSubmit}>
         <TextInput
           type="text"
           placeholder="Search..."
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
+
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <AiOutlineSearch />
       </Button>
+
       <div className="flex gap-2 md:order-2">
         <Button
           className="w-12 h-10 hidden sm:inline"
