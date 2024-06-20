@@ -15,6 +15,7 @@ import Comment from "./Comment";
 import { set } from "mongoose";
 
 const CommentSection = ({ postId }) => {
+  console.log("aps2", postId);
   const { currentUser } = useSelector((state) => state.user);
   const [comments, setComments] = useState("");
   const [commentError, setCommentError] = useState(null);
@@ -60,6 +61,7 @@ const CommentSection = ({ postId }) => {
   };
 
   useEffect(() => {
+    console.log("aps", postId);
     const fetchComments = async () => {
       try {
         setCommentLoading(true);
