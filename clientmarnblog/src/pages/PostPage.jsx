@@ -111,7 +111,7 @@ const PostPage = () => {
       </div>
 
       {/*Comment Section component*/}
-      <CommentSection postId={postData._id} />
+      <CommentSection postId={postData?._id} />
 
       {/*Recent Artical*/}
       <div className="flex flex-col justify-center items-center mb-5">

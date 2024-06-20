@@ -26,7 +26,7 @@ const CommentSection = ({ postId }) => {
   const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
 
-  console.log(getComments);
+  // console.log(getComments);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comments.length > 200) {
