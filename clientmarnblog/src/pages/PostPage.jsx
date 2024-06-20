@@ -12,12 +12,14 @@ const PostPage = () => {
   const [error, setError] = useState(false);
   const [postData, setPostData] = useState(null);
   const [recentPosts, setRecentPosts] = useState(null);
+  console.log("postdata in post page", postData);
+  console.log("slug in post page", postSlug);
   useEffect(() => {
     const fetchPost = async () => {
       try {
         setLoading(true);
         const res = await axios.get(`/api/post/getPosts/?slug=${postSlug}`);
-        console.log("res ", res);
+        console.log("res in post page ", res);
         const data = await res?.data;
         setLoading(false);
         console.log(
@@ -32,6 +34,7 @@ const PostPage = () => {
           return setError(true);
         }
         if (res?.statusText?.toLowerCase() === "ok") {
+          console.log("data in post page", data);
           setPostData(data?.posts?.[0]);
           setError(false);
         }
