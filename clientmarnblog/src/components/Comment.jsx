@@ -33,7 +33,7 @@ const Comment = ({ comment, onLike, onDisLike, onLove, onEdit, onDelete }) => {
           console.log(data?.message);
           return;
         }
-        if (res?.statusText?.toLowerCase() === "ok") {
+        if (res?.status === 200) {
           setGetUsers(data);
           setGetUsersError(null);
           setGetUsersLoading(false);
@@ -70,7 +70,7 @@ const Comment = ({ comment, onLike, onDisLike, onLove, onEdit, onDelete }) => {
         console.log(data?.message);
         return;
       }
-      if (res?.statusText?.toLowerCase() === "ok") {
+      if (res?.status === 200) {
         setIsEditing(false);
         onEdit(comment, editedContent);
       }

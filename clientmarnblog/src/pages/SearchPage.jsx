@@ -43,7 +43,7 @@ const SearchPage = () => {
           console.log("Error", data?.message);
           return setError(true);
         }
-        if (res?.statusText?.toLowerCase() === "ok") {
+        if (res?.status === 200) {
           console.log("47...data.posts", data);
           setPosts(data.posts);
           setLoading(false);

@@ -33,7 +33,8 @@ const PostPage = () => {
           console.log("Error", data?.message);
           return setError(true);
         }
-        if (res?.statusText?.toLowerCase() === "ok") {
+        console.log("status", typeof res.status);
+        if (res?.status === 200) {
           console.log("data in post page", data);
           setPostData(data?.posts?.[0]);
           setError(false);
@@ -58,7 +59,7 @@ const PostPage = () => {
           console.log(error);
           return;
         }
-        if (res?.statusText?.toLowerCase() === "ok") {
+        if (res?.status === 200) {
           setRecentPosts(data.posts);
         }
       };
