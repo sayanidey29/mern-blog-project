@@ -118,7 +118,7 @@ const UpdatePost = () => {
       setPublishSuccessData(null);
       setPublishError(null);
       const res = await fetch(
-        `/api/post/updatePosts/${postId}/${currentUser._id}`,
+        `/api/post/updatePosts/${postId}/${currentUser?._id}`,
         {
           method: "PUT",
           headers: { "content-Type": "application/json" },

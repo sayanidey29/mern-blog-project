@@ -38,7 +38,7 @@ const DashComments = () => {
     if (currentUser.isAdmin) {
       fetchComments();
     }
-  }, [currentUser._id]);
+  }, [currentUser?._id]);
   const handleShowMore = async () => {
     const startIndex = postComments?.length;
     try {
@@ -93,7 +93,7 @@ const DashComments = () => {
       }
       if (res.ok) {
         setPostComments((prev) =>
-          prev.filter((comment) => comment._id !== commentIdToDelete)
+          prev.filter((comment) => comment?._id !== commentIdToDelete)
         );
 
         handleShowLess();
@@ -120,7 +120,7 @@ const DashComments = () => {
 
             {postComments.map((comment) => {
               return (
-                <Table.Body className="divide-y" key={comment._id}>
+                <Table.Body className="divide-y" key={comment?._id}>
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell>
                       {new Date(comment.updatedAt).toLocaleDateString()}
@@ -135,7 +135,7 @@ const DashComments = () => {
                       <span
                         onClick={() => {
                           setShowModal(true);
-                          setCommentIdToDelete(comment._id);
+                          setCommentIdToDelete(comment?._id);
                         }}
                         className="text-red-500 font-medium hover:underline cursor-pointer"
                       >

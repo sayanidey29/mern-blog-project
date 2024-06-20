@@ -119,7 +119,7 @@ const PostPage = () => {
         <div className=" flex flex-wrap gap-5 mt-5 justify-center ">
           {recentPosts &&
             recentPosts.map((post) => {
-              return <PostCard key={post._id} post={post} />;
+              return <PostCard key={post?._id} post={post} />;
             })}
         </div>
       </div>
