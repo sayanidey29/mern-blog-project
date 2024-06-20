@@ -104,7 +104,7 @@ const CommentSection = ({ postId }) => {
         console.log(data);
         setGetComments(
           getComments.map((comment) =>
-            comment._id === commentId
+            comment?._id === commentId
               ? {
                   ...comment,
                   likes: data.likes,
@@ -139,7 +139,7 @@ const CommentSection = ({ postId }) => {
         console.log(data);
         setGetComments(
           getComments.map((comment) =>
-            comment._id === commentId
+            comment?._id === commentId
               ? {
                   ...comment,
                   likes: data.likes,
@@ -175,7 +175,7 @@ const CommentSection = ({ postId }) => {
 
         setGetComments(
           getComments.map((comment) =>
-            comment._id === commentId
+            comment?._id === commentId
               ? {
                   ...comment,
                   likes: data.likes,
@@ -198,7 +198,7 @@ const CommentSection = ({ postId }) => {
   const handleEdit = async (comment, editedContent) => {
     setGetComments(
       getComments.map((c) =>
-        c._id === comment._id ? { ...c, content: editedContent } : c
+        c?._id === comment?._id ? { ...c, content: editedContent } : c
       )
     );
   };
@@ -209,7 +209,7 @@ const CommentSection = ({ postId }) => {
         navigate("/sign-in");
       }
       const res = await axios.delete(
-        `/api/comment/deleteComment/${comment._id}`
+        `/api/comment/deleteComment/${comment?._id}`
       );
       const data = await res.data;
       if (data?.success === false) {
@@ -218,7 +218,7 @@ const CommentSection = ({ postId }) => {
       }
       if (res?.statusText?.toLowerCase() === "ok") {
         console.log(data);
-        setGetComments(getComments.filter((c) => c._id !== comment._id));
+        setGetComments(getComments.filter((c) => c?._id !== comment?._id));
         setShowModal(false);
       }
     } catch (error) {
@@ -311,7 +311,7 @@ const CommentSection = ({ postId }) => {
             return (
               <Comment
                 comment={comment}
-                key={comment._id}
+                key={comment?._id}
                 onLike={handleLike}
                 onLove={handleLove}
                 onDisLike={handleDisLike}
