@@ -42,6 +42,7 @@ app.use("/api/post", postRoutes);
 //Comment ApI Route
 app.use("/api/comment", commentRoutes);
 
+//Static folder
 app.use(express.static(path.join(__dirname, "/clientmarnblog/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "clientmarnblog", "dist", "index.html"));
