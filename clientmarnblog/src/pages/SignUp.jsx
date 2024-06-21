@@ -10,7 +10,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const handleChange = (e) => {
     // console.log("event:", e, "event Value:", e.target.value);
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+    setFormData({ ...formData, [e.target?.id]: e.target.value.trim() });
     // console.log("formData:", formData);
   };
   const handleSubmit = async (e) => {

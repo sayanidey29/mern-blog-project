@@ -63,20 +63,20 @@ const SearchPage = () => {
     fetchPosts();
   }, [location.search]);
   const handleChange = (e) => {
-    if (e.target.id === "searchTerm") {
+    if (e.target?.id === "searchTerm") {
       setSidebarData({
         ...sidebarData,
         searchTerm: e.target.value,
       });
     }
-    if (e.target.id === "sort") {
+    if (e.target?.id === "sort") {
       const order = e.target.value || "desc";
       setSidebarData({
         ...sidebarData,
         sort: order,
       });
     }
-    if (e.target.id === "category") {
+    if (e.target?.id === "category") {
       const category = e.target.value || "uncategorized";
       setSidebarData({
         ...sidebarData,
