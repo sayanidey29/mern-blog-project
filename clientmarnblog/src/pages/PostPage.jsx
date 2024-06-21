@@ -97,7 +97,7 @@ const PostPage = () => {
           {postData && new Date(postData.createdAt).toLocaleDateString()}
         </span>
         <span className="italic">
-          {postData && (postData.content.length / 1000).toFixed(0)} mins read
+          {postData && (postData.content?.length / 1000).toFixed(0)} mins read
         </span>
       </div>
       <div
