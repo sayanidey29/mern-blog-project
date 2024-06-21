@@ -46,7 +46,7 @@ const CommentSection = ({ postId }) => {
         setCommentError(data.message);
         return;
       }
-      if (res?.statusText?.toLowerCase() === "ok") {
+      if (res?.status === 200) {
         console.log("data commment", data);
         setCommentError(null);
         setComments("");
@@ -72,7 +72,7 @@ const CommentSection = ({ postId }) => {
           return;
         }
         console.log("res", res);
-        if (res?.statusText?.toLowerCase() === "ok") {
+        if (res?.status === 200) {
           console.log("com", data);
           setGetComments(data);
           setGetCommentError(null);
@@ -100,7 +100,7 @@ const CommentSection = ({ postId }) => {
         console.log(data?.message);
         return;
       }
-      if (res?.statusText?.toLowerCase() === "ok") {
+      if (res?.status === 200) {
         console.log(data);
         setGetComments(
           getComments.map((comment) =>
@@ -135,7 +135,7 @@ const CommentSection = ({ postId }) => {
         console.log(data?.message);
         return;
       }
-      if (res?.statusText?.toLowerCase() === "ok") {
+      if (res?.status === 200) {
         console.log(data);
         setGetComments(
           getComments.map((comment) =>
@@ -170,7 +170,7 @@ const CommentSection = ({ postId }) => {
         console.log(data?.message);
         return;
       }
-      if (res?.statusText?.toLowerCase() === "ok") {
+      if (res?.status === 200) {
         console.log(data);
 
         setGetComments(
@@ -216,7 +216,7 @@ const CommentSection = ({ postId }) => {
         console.log(data?.message);
         return;
       }
-      if (res?.statusText?.toLowerCase() === "ok") {
+      if (res?.status === 200) {
         console.log(data);
         setGetComments(getComments.filter((c) => c._id !== comment._id));
         setShowModal(false);
