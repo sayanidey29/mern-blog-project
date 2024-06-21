@@ -159,7 +159,7 @@ const DashboardComponent = () => {
             {users &&
               users.map((user) => {
                 return (
-                  <Table.Body key={user._id} className="divide-y">
+                  <Table.Body key={user?._id} className="divide-y">
                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                       <Table.Cell>
                         <img
@@ -194,7 +194,7 @@ const DashboardComponent = () => {
             {comments &&
               comments.map((comment) => {
                 return (
-                  <Table.Body key={comment._id} className="divide-y">
+                  <Table.Body key={comment?._id} className="divide-y">
                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                       <Table.Cell className="w-96">
                         <p className="line-clamp-2">{comment.content}</p>
@@ -224,7 +224,7 @@ const DashboardComponent = () => {
             {posts &&
               posts.map((post) => {
                 return (
-                  <Table.Body key={post._id} className="divide-y">
+                  <Table.Body key={post?._id} className="divide-y">
                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                       <Table.Cell>
                         <img

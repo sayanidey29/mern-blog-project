@@ -37,7 +37,7 @@ const DashUsers = () => {
     if (currentUser.isAdmin) {
       fetchUsers();
     }
-  }, [currentUser._id]);
+  }, [currentUser?._id]);
   const handleShowMore = async () => {
     const startIndex = userPofiles?.length;
     try {
@@ -87,7 +87,7 @@ const DashUsers = () => {
       }
       if (res.ok) {
         setUserPofiles((prev) =>
-          prev.filter((user) => user._id !== userIdToDelete)
+          prev.filter((user) => user?._id !== userIdToDelete)
         );
 
         handleShowLess();
@@ -113,7 +113,7 @@ const DashUsers = () => {
 
             {userPofiles.map((user) => {
               return (
-                <Table.Body className="divide-y" key={user._id}>
+                <Table.Body className="divide-y" key={user?._id}>
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell>
                       {new Date(user?.createdAt).toLocaleDateString()}
@@ -138,7 +138,7 @@ const DashUsers = () => {
                       <span
                         onClick={() => {
                           setShowModal(true);
-                          setUserIdToDelete(user._id);
+                          setUserIdToDelete(user?._id);
                         }}
                         className="text-red-500 font-medium hover:underline cursor-pointer"
                       >

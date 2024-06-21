@@ -58,9 +58,12 @@ const Comment = ({ comment, onLike, onDisLike, onLove, onEdit, onDelete }) => {
       if (!currentUser) {
         navigate("/sign-in");
       }
-      const res = await axios.put(`/api/comment/updateComment/${comment._id}`, {
-        content: editedContent,
-      });
+      const res = await axios.put(
+        `/api/comment/updateComment/${comment?._id}`,
+        {
+          content: editedContent,
+        }
+      );
       const data = await res.data;
       console.log("edit", res);
       if (data?.success === false) {
@@ -147,10 +150,10 @@ const Comment = ({ comment, onLike, onDisLike, onLove, onEdit, onDelete }) => {
                 <div className=" flex flex-col gap-1 items-center  justify-center w-full flex-1">
                   <button
                     type="button"
-                    onClick={() => onLike(comment._id)}
+                    onClick={() => onLike(comment?._id)}
                     className={`text-gray-400 hover:text-blue-500 flex flex-1 items-center  justify-center ${
                       currentUser &&
-                      comment.likes?.includes(currentUser._id) &&
+                      comment.likes?.includes(currentUser?._id) &&
                       "!text-blue-500"
                       //: "!text-gray-400"
                     }`}
@@ -167,10 +170,10 @@ const Comment = ({ comment, onLike, onDisLike, onLove, onEdit, onDelete }) => {
                 <div className="flex flex-col items-center gap-1 justify-center  w-full  flex-1">
                   <button
                     type="button"
-                    onClick={() => onLove(comment._id)}
+                    onClick={() => onLove(comment?._id)}
                     className={`text-gray-400 hover:text-red-500 flex flex-1 items-center  justify-center ${
                       currentUser &&
-                      comment.loves?.includes(currentUser._id) &&
+                      comment.loves?.includes(currentUser?._id) &&
                       "!text-red-500"
                       //: "!text-gray-400"
                     }`}
@@ -187,10 +190,10 @@ const Comment = ({ comment, onLike, onDisLike, onLove, onEdit, onDelete }) => {
                 <div className="flex flex-col items-center gap-1 justify-center  w-full flex-1">
                   <button
                     type="button"
-                    onClick={() => onDisLike(comment._id)}
+                    onClick={() => onDisLike(comment?._id)}
                     className={`text-gray-400 hover:text-blue-500 flex flex-1 items-center  justify-center ${
                       currentUser &&
-                      comment.dislikes?.includes(currentUser._id) &&
+                      comment.dislikes?.includes(currentUser?._id) &&
                       "!text-blue-500"
                       //: "!text-gray-400"
                     }`}
@@ -207,7 +210,7 @@ const Comment = ({ comment, onLike, onDisLike, onLove, onEdit, onDelete }) => {
                   </p>
                 </div>
                 {currentUser &&
-                  (currentUser._id === comment.userId ||
+                  (currentUser?._id === comment.userId ||
                     currentUser.isAdmin) && (
                     <>
                       <div className="flex flex-col items-center gap-1 justify-center  w-full flex-1 hover:text-blue-500 ">
