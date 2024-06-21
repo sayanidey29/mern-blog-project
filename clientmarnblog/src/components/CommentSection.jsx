@@ -29,7 +29,7 @@ const CommentSection = ({ postId }) => {
   console.log(getComments);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (comments.length > 200) {
+    if (comments?.length > 200) {
       return;
     }
     try {
@@ -267,7 +267,7 @@ const CommentSection = ({ postId }) => {
           />
           <div className="flex justify-between items-center mt-5">
             <p className="text-gray-500 text-xs ">
-              {200 - comments.length} charecters remaining
+              {200 - comments?.length} charecters remaining
             </p>
             <Button
               outline
@@ -297,14 +297,14 @@ const CommentSection = ({ postId }) => {
           <Spinner />
           <span>Loading...</span>
         </div>
-      ) : getComments.length === 0 ? (
+      ) : getComments?.length === 0 ? (
         <p className="text-sm my-5">No Comments Yet!</p>
       ) : (
         <div>
           <div className="text-xs my-5 flex items-center gap-1">
             <p>Comments</p>
             <div className="border border-gray-400 py-1 px-2 rounded-sm ">
-              {getComments.length}
+              {getComments?.length}
             </div>
           </div>
           {getComments.map((comment) => {

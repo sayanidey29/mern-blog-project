@@ -48,7 +48,7 @@ const DashComments = () => {
       const data = await res.json();
       if (res.ok) {
         setPostComments((prev) => [...prev, ...data?.comments]);
-        if (data?.comments.length < 9) {
+        if (data?.comments?.length < 9) {
           setShowLess(true);
           setShowMore(false);
         }

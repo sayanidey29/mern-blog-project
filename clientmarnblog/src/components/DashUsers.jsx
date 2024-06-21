@@ -45,7 +45,7 @@ const DashUsers = () => {
       const data = await res.json();
       if (res.ok) {
         setUserPofiles((prev) => [...prev, ...data?.users]);
-        if (data.users.length < 9) {
+        if (data.users?.length < 9) {
           setShowLess(true);
           setShowMore(false);
         }

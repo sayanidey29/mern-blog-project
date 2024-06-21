@@ -48,7 +48,7 @@ const SearchPage = () => {
           setPosts(data.posts);
           setLoading(false);
           setError(null);
-          if (data.posts.length === 9) {
+          if (data.posts?.length === 9) {
             setShowMore(true);
           } else {
             setShowMore(false);
@@ -94,7 +94,7 @@ const SearchPage = () => {
     navigate(`/search?${searchQuery}`);
   };
   const handleShowMore = async () => {
-    const numberOfPosts = posts.length;
+    const numberOfPosts = posts?.length;
     const startIndex = numberOfPosts;
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
@@ -105,7 +105,7 @@ const SearchPage = () => {
       const data = await res.json();
       if (res.ok) {
         setPosts([...posts, ...data.posts]);
-        if (data?.posts.length === 9) {
+        if (data?.posts?.length === 9) {
           setShowMore(true);
         } else {
           setShowMore(false);
@@ -164,7 +164,7 @@ const SearchPage = () => {
           Posts Results:
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
-          {!loading && posts.length === 0 && (
+          {!loading && posts?.length === 0 && (
             <p className="text-xl text-gray-500">No Posts Found!!!</p>
           )}
           {loading && (
