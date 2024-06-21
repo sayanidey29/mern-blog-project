@@ -116,7 +116,7 @@ const DashProfile = () => {
     setUpdateUserSuccess(null);
     setUpdateUserError(null);
     setUpdateUserloading(false);
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    setFormData({ ...formData, [e.target?.id]: e.target.value });
   };
   const handleSubmit = async (e) => {
     console.log("formData", formData);
