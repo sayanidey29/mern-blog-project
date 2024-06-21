@@ -175,7 +175,7 @@ const SearchPage = () => {
           )}
           {!loading &&
             posts &&
-            posts.map((post) => <PostCard key={post._id} post={post} />)}
+            posts.map((post) => <PostCard key={post?._id} post={post} />)}
           {showMore && (
             <button
               onClick={handleShowMore}

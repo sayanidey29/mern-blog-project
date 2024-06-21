@@ -111,7 +111,7 @@ const PostPage = () => {
       </div>
 
       {/*Comment Section component*/}
-      <CommentSection postId={postData._id} />
+      <CommentSection postId={postData?._id} />
 
       {/*Recent Artical*/}
       <div className="flex flex-col justify-center items-center mb-5">
@@ -119,7 +119,7 @@ const PostPage = () => {
         <div className=" flex flex-wrap gap-5 mt-5 justify-center ">
           {recentPosts &&
             recentPosts.map((post) => {
-              return <PostCard key={post._id} post={post} />;
+              return <PostCard key={post?._id} post={post} />;
             })}
         </div>
       </div>

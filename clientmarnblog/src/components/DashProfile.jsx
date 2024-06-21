@@ -137,8 +137,8 @@ const DashProfile = () => {
       setUpdateUserloading(true);
       setUpdateUserError(null);
       dispatch(updateStart());
-      console.log("currentUser._id", currentUser._id);
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      console.log("currentUser?._id", currentUser?._id);
+      const res = await fetch(`/api/user/update/${currentUser?._id}`, {
         method: "PUT",
         headers: { "content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -168,7 +168,7 @@ const DashProfile = () => {
     setShowModal(false);
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`/api/user/delete/${currentUser?._id}`, {
         method: "DELETE",
       });
       const data = await res.json();

@@ -14,7 +14,9 @@ const DashPosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/post/getPosts?userId=${currentUser._id}`);
+        const res = await fetch(
+          `/api/post/getPosts?userId=${currentUser?._id}`
+        );
         const data = await res.json();
         console.log("userPosts", userPosts);
         console.log("data", data);
@@ -36,12 +38,12 @@ const DashPosts = () => {
     if (currentUser.isAdmin) {
       fetchPosts();
     }
-  }, [currentUser._id]);
+  }, [currentUser?._id]);
   const handleShowMore = async () => {
     const startIndex = userPosts?.length;
     try {
       const res = await fetch(
-        `/api/post/getPosts/?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/api/post/getPosts/?userId=${currentUser?._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -59,7 +61,7 @@ const DashPosts = () => {
   const handleShowLess = async () => {
     const startIndex = userPosts?.length;
     try {
-      const res = await fetch(`/api/post/getPosts/?userId=${currentUser._id}`);
+      const res = await fetch(`/api/post/getPosts/?userId=${currentUser?._id}`);
       const data = await res.json();
       if (res.ok) {
         setUserPosts(data?.posts);
@@ -80,7 +82,7 @@ const DashPosts = () => {
     setShowModal(false);
     try {
       const res = await fetch(
-        `/api/post/deletePosts/${postIdToDelete}/${currentUser._id}`,
+        `/api/post/deletePosts/${postIdToDelete}/${currentUser?._id}`,
         {
           method: "DELETE",
         }
@@ -91,7 +93,7 @@ const DashPosts = () => {
       }
       if (res.ok) {
         setUserPosts((prev) =>
-          prev.filter((post) => post._id !== postIdToDelete)
+          prev.filter((post) => post?._id !== postIdToDelete)
         );
         handleShowLess();
       }
@@ -118,7 +120,7 @@ const DashPosts = () => {
 
             {userPosts.map((post) => {
               return (
-                <Table.Body className="divide-y" key={post._id}>
+                <Table.Body className="divide-y" key={post?._id}>
                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell>
                       {new Date(post.updatedAt).toLocaleDateString()}
@@ -145,7 +147,7 @@ const DashPosts = () => {
                       <span
                         onClick={() => {
                           setShowModal(true);
-                          setPostIdToDelete(post._id);
+                          setPostIdToDelete(post?._id);
                         }}
                         className="text-red-500 font-medium hover:underline cursor-pointer"
                       >
@@ -154,7 +156,7 @@ const DashPosts = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <Link
-                        to={`/update-post/${post._id}`}
+                        to={`/update-post/${post?._id}`}
                         className="text-teal-500 hover:underline"
                       >
                         <span>Edit</span>
